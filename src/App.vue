@@ -599,8 +599,20 @@ export default {
 
             // тащим категорию в additional list
             if (fromElementIndex == -1 && toCategoryIndex == -1) {
+                this.filteredCategories[fromCategoryIndex].dragging = false;
+                this.filteredElements[toElementIndex].droppable = false;
                 return false;
                 // тащим категорию...
+            } else if (
+                fromElementIndex == -1 &&
+                toCategoryIndex !== -1 &&
+                toElementIndex !== -1
+            ) {
+                this.filteredCategories[fromCategoryIndex].dragging = false;
+                this.filteredCategories[toCategoryIndex].elements[
+                    toElementIndex
+                ].droppable = false;
+                return false;
             } else if (fromElementIndex == -1) {
                 // ... внутри category list
                 if (toCategoryIndex !== -1) {
@@ -627,7 +639,7 @@ export default {
                 } else if (toCategoryIndex == -1 && toElementIndex == -1) {
                     this.filteredElements[toElementIndex].droppable = false;
                     this.console.log('tyt2');
-                } else if (toCategoryIndex == -1 && toElementIndex == 1) {
+                } else if (toCategoryIndex == -1 && toElementIndex !== -1) {
                     this.filteredElements[toElementIndex].droppable = false;
                     this.console.log('tyt2');
                 } else if (toCategoryIndex !== -1 && toElementIndex !== -1) {
@@ -663,6 +675,7 @@ export default {
 
             if (fromCategoryIndex == -1) {
                 element = this.elements[fromElementIndex];
+                element.dragging = false;
 
                 this.elements = this.elements.filter((elem) => elem != element);
             } else if (fromCategoryIndex >= 0) {
@@ -670,7 +683,7 @@ export default {
                     this.categories[fromCategoryIndex].elements[
                         fromElementIndex
                     ];
-
+                element.dragging = false;
                 this.categories[fromCategoryIndex].elements = this.categories[
                     fromCategoryIndex
                 ].elements.filter((elem) => elem != element);
@@ -713,9 +726,12 @@ export default {
                     continue;
                 } else if (i == toCategoryIndex) {
                     categories.push(this.categories[i]);
+                    this.categories[i].dragging = false;
                     categories.push(category);
+                    category.dragging = false;
                 } else {
                     categories.push(this.categories[i]);
+                    this.categories[i].dragging = false;
                 }
             }
 
