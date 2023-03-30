@@ -45,15 +45,17 @@
             </button> -->
             <template v-for="(category, categoryIndex) in filteredCategories">
                 <li>
-                    <div class="category-container-bord">
+                    <div
+                        class="drop-zone"
+                        @dragenter="category.droppable = true"
+                        @dragleave="category.droppable = false"
+                    >
                         <div
                             class="category-container"
                             :draggable="category.dragging"
                             @dragstart="onDragStart($event, categoryIndex, -1)"
                             @drop="onDrop($event, categoryIndex, -1)"
                             @dragover.prevent
-                            @dragenter="category.droppable = true"
-                            @dragleave="category.droppable = false"
                             @dragend="dragEnd"
                             :class="[
                                 category.droppable ? 'drop' : '',
@@ -94,20 +96,20 @@
                                 </div>
                             </div>
                             <div class="action-buttons">
-                                <button class="category-button-edit"></button>
+                                <button class="action-button-edit"></button>
                                 <button
                                     v-if="category.elements != 0"
-                                    :class="'category-delete-disabled'"
+                                    :class="'action-button-delete-disabled'"
                                 ></button>
                                 <button
                                     v-else
-                                    :class="'category-delete-active'"
+                                    :class="'action-button-delete-active'"
                                 ></button>
                                 <button
                                     :class="
                                         category.highlightedArrow
-                                            ? 'category-button-move-blue'
-                                            : 'category-button-move'
+                                            ? 'action-button-move-blue'
+                                            : 'action-button-move'
                                     "
                                     @mouseover="
                                         category.highlightedArrow = true
@@ -155,22 +157,20 @@
                                     </div>
                                 </div>
                                 <div class="action-buttons">
-                                    <button
-                                        class="category-button-edit"
-                                    ></button>
+                                    <button class="action-button-edit"></button>
                                     <button
                                         v-if="category.elements != 0"
-                                        :class="'category-delete-disabled'"
+                                        :class="'action-button-delete-disabled'"
                                     ></button>
                                     <button
                                         v-else
-                                        :class="'category-delete-active'"
+                                        :class="'action-button-delete-active'"
                                     ></button>
                                     <button
                                         :class="
                                             category.highlightedArrow
-                                                ? 'category-button-move-blue'
-                                                : 'category-button-move'
+                                                ? 'action-button-move-blue'
+                                                : 'action-button-move'
                                         "
                                     ></button>
                                 </div>
@@ -182,85 +182,44 @@
                         <template
                             v-for="(element, elementIndex) in category.elements"
                         >
-                            <li
-                                :class="
-                                    !category.collapse
-                                        ? 'elem-open'
-                                        : 'elem-close'
-                                "
+                            <div
+                                class="drop-zone"
+                                @dragenter="element.droppable = true"
+                                @dragleave="element.droppable = false"
                             >
-                                <div
-                                    class="element-container"
-                                    :draggable="element.dragging"
-                                    @dragstart="
-                                        onDragStart(
-                                            $event,
-                                            categoryIndex,
-                                            elementIndex
-                                        )
+                                <li
+                                    :class="
+                                        !category.collapse
+                                            ? 'elem-open'
+                                            : 'elem-close'
                                     "
-                                    @drop="
-                                        onDrop(
-                                            $event,
-                                            categoryIndex,
-                                            elementIndex
-                                        )
-                                    "
-                                    @dragover.prevent
-                                    @dragenter="element.droppable = true"
-                                    @dragleave="element.droppable = false"
-                                    @dragend="dragEnd"
-                                    :class="[
-                                        element.droppable ? 'drop' : '',
-                                        element.dragging
-                                            ? 'drag-color-none'
-                                            : 'drag-color-return',
-                                    ]"
                                 >
-                                    <div>
-                                        {{ element.title }}
-                                        <span
-                                            v-for="color in element.colors"
-                                            class="dot"
-                                            :style="{ color: color }"
-                                        >
-                                            &#11044;</span
-                                        >
-                                        <span
-                                            v-if="element.required"
-                                            class="required"
-                                            >Обязательный</span
-                                        >
-                                        <span class="description">{{
-                                            element.description
-                                        }}</span>
-                                    </div>
-                                    <div class="action-buttons">
-                                        <button
-                                            class="category-button-edit"
-                                        ></button>
-                                        <button
-                                            class="category-delete-active"
-                                        ></button>
-                                        <button
-                                            :class="
-                                                element.highlightedArrow
-                                                    ? 'category-button-move-blue'
-                                                    : 'category-button-move'
-                                            "
-                                            @mouseover="
-                                                element.highlightedArrow = true
-                                            "
-                                            @mouseout="
-                                                element.highlightedArrow = false
-                                            "
-                                            @mousedown="element.dragging = true"
-                                            @mouseup="element.dragging = false"
-                                        ></button>
-                                    </div>
-                                </div>
-                                <div v-if="element.dragging" class="dragImg">
-                                    <div class="element-container drag-clone">
+                                    <div
+                                        class="element-container"
+                                        :draggable="element.dragging"
+                                        @dragstart="
+                                            onDragStart(
+                                                $event,
+                                                categoryIndex,
+                                                elementIndex
+                                            )
+                                        "
+                                        @drop="
+                                            onDrop(
+                                                $event,
+                                                categoryIndex,
+                                                elementIndex
+                                            )
+                                        "
+                                        @dragover.prevent
+                                        @dragend="dragEnd"
+                                        :class="[
+                                            element.droppable ? 'drop' : '',
+                                            element.dragging
+                                                ? 'drag-color-none'
+                                                : 'drag-color-return',
+                                        ]"
+                                    >
                                         <div>
                                             {{ element.title }}
                                             <span
@@ -281,22 +240,76 @@
                                         </div>
                                         <div class="action-buttons">
                                             <button
-                                                class="category-button-edit"
+                                                class="action-button-edit"
                                             ></button>
                                             <button
-                                                class="category-delete-active"
+                                                class="action-button-delete-active"
                                             ></button>
                                             <button
                                                 :class="
                                                     element.highlightedArrow
-                                                        ? 'category-button-move-blue'
-                                                        : 'category-button-move'
+                                                        ? 'action-button-move-blue'
+                                                        : 'action-button-move'
+                                                "
+                                                @mouseover="
+                                                    element.highlightedArrow = true
+                                                "
+                                                @mouseout="
+                                                    element.highlightedArrow = false
+                                                "
+                                                @mousedown="
+                                                    element.dragging = true
+                                                "
+                                                @mouseup="
+                                                    element.dragging = false
                                                 "
                                             ></button>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                    <div
+                                        v-if="element.dragging"
+                                        class="dragImg"
+                                    >
+                                        <div
+                                            class="element-container drag-clone"
+                                        >
+                                            <div>
+                                                {{ element.title }}
+                                                <span
+                                                    v-for="color in element.colors"
+                                                    class="dot"
+                                                    :style="{ color: color }"
+                                                >
+                                                    &#11044;</span
+                                                >
+                                                <span
+                                                    v-if="element.required"
+                                                    class="required"
+                                                    >Обязательный</span
+                                                >
+                                                <span class="description">{{
+                                                    element.description
+                                                }}</span>
+                                            </div>
+                                            <div class="action-buttons">
+                                                <button
+                                                    class="action-button-edit"
+                                                ></button>
+                                                <button
+                                                    class="action-button-delete-active"
+                                                ></button>
+                                                <button
+                                                    :class="
+                                                        element.highlightedArrow
+                                                            ? 'action-button-move-blue'
+                                                            : 'action-button-move'
+                                                    "
+                                                ></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </div>
                         </template>
                     </ul>
                 </li>
@@ -305,53 +318,26 @@
 
         <ul class="additional-list">
             <template v-for="(element, elementIndex) in filteredElements">
-                <li>
-                    <div
-                        class="element-container"
-                        :draggable="element.dragging"
-                        @dragstart="onDragStart($event, -1, elementIndex)"
-                        @drop="onDrop($event, -1, elementIndex)"
-                        @dragover.prevent
-                        @dragenter="element.droppable = true"
-                        @dragleave="element.droppable = false"
-                        @dragend="dragEnd"
-                        :class="[
-                            element.droppable ? 'drop' : '',
-                            element.dragging
-                                ? 'drag-color-none'
-                                : 'drag-color-return',
-                        ]"
-                    >
-                        <div>
-                            {{ element.title }}
-                            <span
-                                v-for="color in element.colors"
-                                class="dot"
-                                :style="{ color: color }"
-                                >&#11044;</span
-                            >
-                            <span class="description">{{
-                                element.description
-                            }}</span>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="category-button-edit"></button>
-                            <button class="category-delete-active"></button>
-                            <button
-                                :class="
-                                    element.highlightedArrow
-                                        ? 'category-button-move-blue'
-                                        : 'category-button-move'
-                                "
-                                @mouseover="element.highlightedArrow = true"
-                                @mouseout="element.highlightedArrow = false"
-                                @mousedown="element.dragging = true"
-                                @mouseup="element.dragging = false"
-                            ></button>
-                        </div>
-                    </div>
-                    <div v-if="element.dragging" class="dragImg">
-                        <div class="element-container drag-clone">
+                <div
+                    class="drop-zone"
+                    @dragenter="element.droppable = true"
+                    @dragleave="element.droppable = false"
+                >
+                    <li>
+                        <div
+                            class="element-container"
+                            :draggable="element.dragging"
+                            @dragstart="onDragStart($event, -1, elementIndex)"
+                            @drop="onDrop($event, -1, elementIndex)"
+                            @dragover.prevent
+                            @dragend="dragEnd"
+                            :class="[
+                                element.droppable ? 'drop' : '',
+                                element.dragging
+                                    ? 'drag-color-none'
+                                    : 'drag-color-return',
+                            ]"
+                        >
                             <div>
                                 {{ element.title }}
                                 <span
@@ -365,20 +351,55 @@
                                 }}</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="category-button-edit"></button>
-                                <button class="category-delete-active"></button>
+                                <button class="action-button-edit"></button>
+                                <button
+                                    class="action-button-delete-active"
+                                ></button>
                                 <button
                                     :class="
                                         element.highlightedArrow
-                                            ? 'category-button-move-blue'
-                                            : 'category-button-move'
+                                            ? 'action-button-move-blue'
+                                            : 'action-button-move'
                                     "
+                                    @mouseover="element.highlightedArrow = true"
+                                    @mouseout="element.highlightedArrow = false"
+                                    @mousedown="element.dragging = true"
+                                    @mouseup="element.dragging = false"
                                 ></button>
                             </div>
                         </div>
-                    </div>
-                    <!-- <div class="element-dropzone"></div> -->
-                </li>
+                        <div v-if="element.dragging" class="dragImg">
+                            <div class="element-container drag-clone">
+                                <div>
+                                    {{ element.title }}
+                                    <span
+                                        v-for="color in element.colors"
+                                        class="dot"
+                                        :style="{ color: color }"
+                                        >&#11044;</span
+                                    >
+                                    <span class="description">{{
+                                        element.description
+                                    }}</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-button-edit"></button>
+                                    <button
+                                        class="action-button-delete-active"
+                                    ></button>
+                                    <button
+                                        :class="
+                                            element.highlightedArrow
+                                                ? 'action-button-move-blue'
+                                                : 'action-button-move'
+                                        "
+                                    ></button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="element-dropzone"></div> -->
+                    </li>
+                </div>
             </template>
         </ul>
     </main>
@@ -831,7 +852,8 @@ header {
 }
 
 main {
-    width: 1190px;
+    /* width: 1190px; */
+    width: 100%;
     min-height: 600px;
     padding: 0 30px;
     /* border: solid 1px green; */
@@ -889,6 +911,12 @@ main {
     color: #8e9cbb;
 }
 
+ul {
+    width: 100%;
+    padding: 0;
+    /* border: 1px solid #dfe4ef; */
+}
+
 li {
     list-style-type: none;
 }
@@ -899,36 +927,32 @@ li {
     /* border: solid 1px red; */
 }
 
-ul {
-    padding: 0;
-}
-
 li + li {
     margin: -1px 0;
+}
+
+.drop-zone {
+    /* border-bottom: 1px solid #dfe4ef; */
+    width: 100%;
+    min-width: 1860px;
 }
 
 .category-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     width: 1190px;
-    padding-bottom: 6px;
+    padding-bottom: 3px;
     font-family: 'Fira Sans';
     font-weight: 500;
     font-size: 15px;
     height: 48px;
     background-color: #fff;
-    border: 1px solid #dfe4ef;
-}
-
-.category-container-bord {
-    border-bottom: 1px solid #dfe4ef;
+    border: solid 1px #dfe4ef;
 }
 
 .category {
-    /* position: relative;
-    top: 25px;
-    left: 30px; */
     display: flex;
     gap: 14px;
     font-family: 'Fira Sans';
@@ -950,11 +974,6 @@ li + li {
     border-radius: 50%;
 }
 
-/* .category > button img {
-    width: 8px;
-    height: 5px;
-} */
-
 .category-button-up {
     width: 8px;
     height: 5px;
@@ -965,15 +984,6 @@ li + li {
     width: 8px;
     height: 5px;
     background: url(../public/img/category/category-arrow-down.png) no-repeat;
-}
-
-.element-dropzone {
-    position: relative;
-    z-index: 5;
-    /* top: -33px; */
-    width: 1190px;
-    height: 5px;
-    border: solid 2px rebeccapurple;
 }
 
 .action-buttons {
@@ -988,33 +998,33 @@ li + li {
     align-items: center;
     height: 30px;
     width: 32px;
-    /* border: solid 1px red; */
     text-align: center;
     background-position: center;
     border: none;
+    /* border: solid 1px red; */
 }
 .category-container .action-buttons > button:last-child {
     height: 48px;
 }
-.category-button-edit {
+.action-button-edit {
     background: url(../public/img/category/category-pen.png) no-repeat;
 }
 
-.category-delete-active {
+.action-button-delete-active {
     background: url(../public/img/category/category-delete.png) no-repeat;
 }
 
-.category-delete-disabled {
+.action-button-delete-disabled {
     background: url(../public/img/category/deletetrash.png) no-repeat;
 }
 
-.category-button-move {
+.action-button-move {
     height: 15px;
     width: 14px;
     background: url(../public/img/category/category-arrow-move.png) no-repeat;
 }
 
-.category-button-move-blue {
+.action-button-move-blue {
     height: 15px;
     width: 14px;
     background: url(../public/img/category/category-move-blue.png) no-repeat;
@@ -1036,35 +1046,34 @@ li + li {
     /* padding: 0; */
 }
 
-.elem-list > li,
-.additional-list > li {
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-    /* z-index: 10; */
-    /* position: relative; */
+.elem-list li,
+.additional-list li {
     width: 1190px;
     height: 34px;
     font-family: 'Fira Sans';
     font-weight: 400;
     font-size: 13px;
-    padding-bottom: 6px;
-    margin: -0.5px 0;
+    /* padding-bottom: 6px; */
+    /* margin: -0.5px 0; */
     color: #000000;
-    border: 1px solid #dfe4ef;
 }
 
 .element-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 35px;
+    position: relative;
+    top: -1px;
+    border: solid 1px #dfe4ef;
+    /* border: 4px solid #ff238d; */
 }
 
 .element-container > div {
     padding-left: 17px;
 }
 
-.elem-list > li {
+.elem-list li {
     margin-left: 16px;
     width: 1174px;
 }
@@ -1117,7 +1126,7 @@ li:first-child .dot:first-of-type {
 }
 
 .drop {
-    border-bottom: solid 4px #0066ff;
+    border-bottom: solid 4px #0066ff !important;
 }
 
 .drag-clone {
