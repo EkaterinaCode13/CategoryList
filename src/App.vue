@@ -47,16 +47,16 @@
                 <li>
                     <div
                         class="drop-zone"
+                        @drop="onDrop($event, categoryIndex, -1)"
                         @dragenter="category.droppable = true"
                         @dragleave="category.droppable = false"
+                        @dragover.prevent
                     >
                         <div
                             class="category-container"
                             :draggable="category.dragging"
                             @dragstart="onDragStart($event, categoryIndex, -1)"
-                            @drop="onDrop($event, categoryIndex, -1)"
-                            @dragover.prevent
-                            @dragend="dragEnd"
+                            @dragend="onDragEndCategory($event, category)"
                             :class="[
                                 category.droppable ? 'drop' : '',
                                 category.dragging
@@ -96,16 +96,30 @@
                                 </div>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-button-edit"></button>
+                                <button
+                                    @dragover.prevent
+                                    @dragenter="category.droppable = true"
+                                    @dragleave="category.droppable = false"
+                                    class="action-button-edit"
+                                ></button>
                                 <button
                                     v-if="category.elements != 0"
                                     :class="'action-button-delete-disabled'"
+                                    @dragover.prevent
+                                    @dragenter="category.droppable = true"
+                                    @dragleave="category.droppable = false"
                                 ></button>
                                 <button
                                     v-else
                                     :class="'action-button-delete-active'"
+                                    @dragover.prevent
+                                    @dragenter="category.droppable = true"
+                                    @dragleave="category.droppable = false"
                                 ></button>
                                 <button
+                                    @dragover.prevent
+                                    @dragenter="category.droppable = true"
+                                    @dragleave="category.droppable = false"
                                     :class="
                                         category.highlightedArrow
                                             ? 'action-button-move-blue'
@@ -182,17 +196,26 @@
                         <template
                             v-for="(element, elementIndex) in category.elements"
                         >
-                            <div
-                                class="drop-zone"
-                                @dragenter="element.droppable = true"
-                                @dragleave="element.droppable = false"
+                            <li
+                                :class="
+                                    !category.collapse
+                                        ? 'elem-open'
+                                        : 'elem-close'
+                                "
                             >
-                                <li
-                                    :class="
-                                        !category.collapse
-                                            ? 'elem-open'
-                                            : 'elem-close'
+                                <div
+                                    class="drop-zone"
+                                    @drop="
+                                        onDrop(
+                                            $event,
+                                            categoryIndex,
+                                            elementIndex
+                                        )
                                     "
+                                    @dragenter="element.droppable = true"
+                                    @dragleave="element.droppable = false"
+                                    @dragover.prevent
+                                    @dragend="onDragEndElement($event, element)"
                                 >
                                     <div
                                         class="element-container"
@@ -204,15 +227,6 @@
                                                 elementIndex
                                             )
                                         "
-                                        @drop="
-                                            onDrop(
-                                                $event,
-                                                categoryIndex,
-                                                elementIndex
-                                            )
-                                        "
-                                        @dragover.prevent
-                                        @dragend="dragEnd"
                                         :class="[
                                             element.droppable ? 'drop' : '',
                                             element.dragging
@@ -240,12 +254,33 @@
                                         </div>
                                         <div class="action-buttons">
                                             <button
+                                                @dragover.prevent
+                                                @dragenter="
+                                                    element.droppable = true
+                                                "
+                                                @dragleave="
+                                                    element.droppable = false
+                                                "
                                                 class="action-button-edit"
                                             ></button>
                                             <button
+                                                @dragover.prevent
+                                                @dragenter="
+                                                    element.droppable = true
+                                                "
+                                                @dragleave="
+                                                    element.droppable = false
+                                                "
                                                 class="action-button-delete-active"
                                             ></button>
                                             <button
+                                                @dragover.prevent
+                                                @dragenter="
+                                                    element.droppable = true
+                                                "
+                                                @dragleave="
+                                                    element.droppable = false
+                                                "
                                                 :class="
                                                     element.highlightedArrow
                                                         ? 'action-button-move-blue'
@@ -308,8 +343,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            </div>
+                                </div>
+                            </li>
                         </template>
                     </ul>
                 </li>
@@ -318,19 +353,19 @@
 
         <ul class="additional-list">
             <template v-for="(element, elementIndex) in filteredElements">
-                <div
-                    class="drop-zone"
-                    @dragenter="element.droppable = true"
-                    @dragleave="element.droppable = false"
-                >
-                    <li>
+                <li>
+                    <div
+                        class="drop-zone"
+                        @drop="onDrop($event, -1, elementIndex)"
+                        @dragover.prevent
+                        @dragenter="element.droppable = true"
+                        @dragleave="element.droppable = false"
+                        @dragend="onDragEndElement($event, element)"
+                    >
                         <div
                             class="element-container"
                             :draggable="element.dragging"
                             @dragstart="onDragStart($event, -1, elementIndex)"
-                            @drop="onDrop($event, -1, elementIndex)"
-                            @dragover.prevent
-                            @dragend="dragEnd"
                             :class="[
                                 element.droppable ? 'drop' : '',
                                 element.dragging
@@ -351,11 +386,22 @@
                                 }}</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-button-edit"></button>
                                 <button
+                                    @dragover.prevent
+                                    @dragenter="element.droppable = true"
+                                    @dragleave="element.droppable = false"
+                                    class="action-button-edit"
+                                ></button>
+                                <button
+                                    @dragover.prevent
+                                    @dragenter="element.droppable = true"
+                                    @dragleave="element.droppable = false"
                                     class="action-button-delete-active"
                                 ></button>
                                 <button
+                                    @dragover.prevent
+                                    @dragenter="element.droppable = true"
+                                    @dragleave="element.droppable = false"
                                     :class="
                                         element.highlightedArrow
                                             ? 'action-button-move-blue'
@@ -398,8 +444,8 @@
                             </div>
                         </div>
                         <!-- <div class="element-dropzone"></div> -->
-                    </li>
-                </div>
+                    </div>
+                </li>
             </template>
         </ul>
     </main>
@@ -599,7 +645,9 @@ export default {
             // let dragClone = event.target.parentNode.children[1];
             // this.console.log(dragClone);
 
-            event.dataTransfer.setDragImage(dragClone, 1150, 24);
+            let dragX = categoryIndex == -1 || elementIndex == -1 ? 1150 : 1180;
+
+            event.dataTransfer.setDragImage(dragClone, dragX, 24);
 
             return true;
         },
@@ -650,29 +698,24 @@ export default {
                     3) можем в category list (на категорию) => toCategoryIndex !== -1 and toElementIndex == -1 : убираем подсветку у filteredCategories
                 */
 
+                // тащим элемент или additional list на категорию
                 if (toCategoryIndex !== -1 && toElementIndex == -1) {
-                    // this.filteredCategories[toCategoryIndex].elements[
-                    //     toElementIndex
-                    // ].droppable = false;
-                    // this.filteredElements[toElementIndex].droppable = false;
                     this.filteredCategories[toCategoryIndex].droppable = false;
                     this.console.log('tyt');
-                } else if (toCategoryIndex == -1 && toElementIndex == -1) {
+                }
+                // тащим элемент на additional list
+                else if (toCategoryIndex == -1 && toElementIndex !== -1) {
                     this.filteredElements[toElementIndex].droppable = false;
                     this.console.log('tyt2');
-                } else if (toCategoryIndex == -1 && toElementIndex !== -1) {
-                    this.filteredElements[toElementIndex].droppable = false;
-                    this.console.log('tyt2');
-                } else if (toCategoryIndex !== -1 && toElementIndex !== -1) {
+                }
+                // тащим элемент или additional на элемент
+                else if (toCategoryIndex !== -1 && toElementIndex !== -1) {
                     this.console.log(toCategoryIndex);
                     this.console.log(toElementIndex);
                     this.filteredCategories[toCategoryIndex].elements[
                         toElementIndex
                     ].droppable = false;
-                } else if (toCategoryIndex !== -1 && toElementIndex == -1) {
-                    this.filteredCategories[toCategoryIndex].elements[
-                        toElementIndex
-                    ].droppable = false;
+                    this.console.log('tyt3');
                 }
 
                 this.moveElement(
@@ -761,10 +804,14 @@ export default {
         handleDragEnter(e) {
             this.droppable = true;
         },
-        dragEnd(event) {
-            event.target.dragging = false;
+        onDragEndCategory(event, category) {
+            this.console.log(category);
+
+            category.dragging = false;
             // event.target.style.opacity = '1';
-            this.console.log(event.target.dragging);
+        },
+        onDragEndElement(event, element) {
+            element.dragging = false;
         },
         clickClose() {
             this.searchQuery = '';
@@ -941,7 +988,6 @@ li + li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     width: 1190px;
     padding-bottom: 3px;
     font-family: 'Fira Sans';
@@ -954,6 +1000,7 @@ li + li {
 
 .category {
     display: flex;
+
     gap: 14px;
     font-family: 'Fira Sans';
     font-weight: 500;
@@ -996,14 +1043,14 @@ li + li {
 
 .action-buttons > button {
     align-items: center;
-    height: 30px;
+    height: 34px;
     width: 32px;
     text-align: center;
     background-position: center;
     border: none;
     /* border: solid 1px red; */
 }
-.category-container .action-buttons > button:last-child {
+.category-container .action-buttons > button {
     height: 48px;
 }
 .action-button-edit {
@@ -1019,14 +1066,14 @@ li + li {
 }
 
 .action-button-move {
-    height: 15px;
-    width: 14px;
+    /* height: 15px;
+    width: 14px; */
     background: url(../public/img/category/category-arrow-move.png) no-repeat;
 }
 
 .action-button-move-blue {
-    height: 15px;
-    width: 14px;
+    /* height: 15px;
+    width: 14px; */
     background: url(../public/img/category/category-move-blue.png) no-repeat;
 }
 .additional-list {
@@ -1049,7 +1096,7 @@ li + li {
 .elem-list li,
 .additional-list li {
     width: 1190px;
-    height: 34px;
+    /* height: 34px; */
     font-family: 'Fira Sans';
     font-weight: 400;
     font-size: 13px;
@@ -1062,20 +1109,29 @@ li + li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 35px;
-    position: relative;
-    top: -1px;
+    width: 1190px;
+    height: 34px;
+    /* position: relative;
+    bottom: -1px; */
     border: solid 1px #dfe4ef;
     /* border: 4px solid #ff238d; */
+}
+
+.elem-list li .element-container {
+    border-top: none;
+    /* border-bottom: none; */
 }
 
 .element-container > div {
     padding-left: 17px;
 }
 
-.elem-list li {
+.elem-list .element-container {
     margin-left: 16px;
     width: 1174px;
+}
+
+.element-container + .element-container {
 }
 
 .elem-open {
