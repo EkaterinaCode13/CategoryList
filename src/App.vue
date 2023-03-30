@@ -37,12 +37,6 @@
         </div>
 
         <ul class="category-list">
-            <!-- <button @click="searchQuery = ''">
-                Проверка метода searchedCategory
-            </button>
-            <button @click="searchElem()">
-                Проверка метода searchedElement
-            </button> -->
             <template v-for="(category, categoryIndex) in filteredCategories">
                 <li>
                     <div
@@ -443,7 +437,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="element-dropzone"></div> -->
                     </div>
                 </li>
             </template>
@@ -625,14 +618,6 @@ export default {
         },
     },
     methods: {
-        // addColor(event) {
-        //     event.target.classList.add('elem-with-shadow');
-        // },
-        addClassDrop(event) {
-            // this.console.log('dragover');
-            event.preventDefault();
-            this.classList.add('elem-with-shadow');
-        },
         onDragStart(event, categoryIndex, elementIndex) {
             event.dataTransfer.dropEffect = 'move';
             event.dataTransfer.effectAllowed = 'move';
@@ -642,8 +627,6 @@ export default {
             event.dataTransfer.setData('fromElementIndex', elementIndex);
 
             let dragClone = document.querySelector('.dragImg');
-            // let dragClone = event.target.parentNode.children[1];
-            // this.console.log(dragClone);
 
             let dragX = categoryIndex == -1 || elementIndex == -1 ? 1150 : 1180;
 
@@ -969,17 +952,10 @@ li {
 }
 
 .category-list {
-    /* background-color: #fff;
-    /* padding: 0; */
     /* border: solid 1px red; */
 }
 
-li + li {
-    margin: -1px 0;
-}
-
 .drop-zone {
-    /* border-bottom: 1px solid #dfe4ef; */
     width: 100%;
     min-width: 1860px;
 }
@@ -989,7 +965,6 @@ li + li {
     justify-content: space-between;
     align-items: center;
     width: 1190px;
-    padding-bottom: 3px;
     font-family: 'Fira Sans';
     font-weight: 500;
     font-size: 15px;
@@ -1000,7 +975,6 @@ li + li {
 
 .category {
     display: flex;
-
     gap: 14px;
     font-family: 'Fira Sans';
     font-weight: 500;
@@ -1038,7 +1012,6 @@ li + li {
     justify-content: center;
     align-items: center;
     height: 100%;
-    /* background-color: #fff; */
 }
 
 .action-buttons > button {
@@ -1048,7 +1021,6 @@ li + li {
     text-align: center;
     background-position: center;
     border: none;
-    /* border: solid 1px red; */
 }
 .category-container .action-buttons > button {
     height: 48px;
@@ -1066,42 +1038,30 @@ li + li {
 }
 
 .action-button-move {
-    /* height: 15px;
-    width: 14px; */
     background: url(../public/img/category/category-arrow-move.png) no-repeat;
 }
 
 .action-button-move-blue {
-    /* height: 15px;
-    width: 14px; */
     background: url(../public/img/category/category-move-blue.png) no-repeat;
 }
 .additional-list {
-    /* position: relative; */
     width: 1190px;
     margin-top: 14px;
     background-color: #fff;
-    /* border: solid 1px red; */
-    /* border: 1px solid #dfe4ef; */
-    /* padding: 0; */
 }
 
 .elem-list {
     width: 1190px;
     background-color: #fff;
-    /* border: 1px solid #dfe4ef; */
-    /* padding: 0; */
 }
 
 .elem-list li,
 .additional-list li {
     width: 1190px;
-    /* height: 34px; */
+    height: 34px;
     font-family: 'Fira Sans';
     font-weight: 400;
     font-size: 13px;
-    /* padding-bottom: 6px; */
-    /* margin: -0.5px 0; */
     color: #000000;
 }
 
@@ -1111,15 +1071,12 @@ li + li {
     align-items: center;
     width: 1190px;
     height: 34px;
-    /* position: relative;
-    bottom: -1px; */
     border: solid 1px #dfe4ef;
     /* border: 4px solid #ff238d; */
 }
 
 .elem-list li .element-container {
     border-top: none;
-    /* border-bottom: none; */
 }
 
 .element-container > div {
@@ -1131,15 +1088,10 @@ li + li {
     width: 1174px;
 }
 
-.element-container + .element-container {
-}
-
 .elem-open {
     padding: 0;
     margin: 0;
     list-style-type: none;
-    /* overflow: hidden; */
-    /* max-height: 500px; */
     transition: max-height 1s 0s ease-in;
 }
 
@@ -1182,14 +1134,14 @@ li:first-child .dot:first-of-type {
 }
 
 .drop {
-    border-bottom: solid 4px #0066ff !important;
+    border-bottom: solid 4px #0066ff;
 }
 
 .drag-clone {
     width: 1160px;
     height: 35px;
     background: #ffffff;
-    border: 1px solid #dfe4ef;
+    border: solid 1px #dfe4ef;
     box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
 }
 
