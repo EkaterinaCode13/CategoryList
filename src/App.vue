@@ -452,7 +452,6 @@ export default {
         return {
             searchQuery: '',
             inputFocus: false,
-            console: console,
             categories: [
                 {
                     title: 'Обязательные для всех',
@@ -637,17 +636,13 @@ export default {
         onDrop(event, categoryIndex, elementIndex) {
             const fromCategoryIndex =
                 event.dataTransfer.getData('fromCategoryIndex');
-            console.log(fromCategoryIndex);
 
             const fromElementIndex =
                 event.dataTransfer.getData('fromElementIndex');
-            console.log(fromElementIndex);
 
             const toCategoryIndex = categoryIndex;
-            console.log(toCategoryIndex);
 
             const toElementIndex = elementIndex;
-            console.log(toElementIndex);
 
             // тащим категорию в additional list
             if (fromElementIndex == -1 && toCategoryIndex == -1) {
@@ -684,21 +679,16 @@ export default {
                 // тащим элемент или additional list на категорию
                 if (toCategoryIndex !== -1 && toElementIndex == -1) {
                     this.filteredCategories[toCategoryIndex].droppable = false;
-                    this.console.log('tyt');
                 }
                 // тащим элемент на additional list
                 else if (toCategoryIndex == -1 && toElementIndex !== -1) {
                     this.filteredElements[toElementIndex].droppable = false;
-                    this.console.log('tyt2');
                 }
                 // тащим элемент или additional на элемент
                 else if (toCategoryIndex !== -1 && toElementIndex !== -1) {
-                    this.console.log(toCategoryIndex);
-                    this.console.log(toElementIndex);
                     this.filteredCategories[toCategoryIndex].elements[
                         toElementIndex
                     ].droppable = false;
-                    this.console.log('tyt3');
                 }
 
                 this.moveElement(
@@ -709,8 +699,8 @@ export default {
                 );
             }
 
-            // event.stopPropagation();
-            // return false;
+            event.stopPropagation();
+            return false;
         },
         moveElement(
             fromCategoryIndex,
@@ -753,11 +743,6 @@ export default {
                             element
                         );
                 } else {
-                    // this.console.log(
-                    //     this.categories[toCategoryIndex].elements[
-                    //         toElementIndex
-                    //     ]
-                    // );
                     let newElements = this.categories[
                         toCategoryIndex
                     ].elements.splice(toElementIndex + 1, 0, element);
@@ -784,14 +769,8 @@ export default {
 
             this.categories = categories;
         },
-        handleDragEnter(e) {
-            this.droppable = true;
-        },
         onDragEndCategory(event, category) {
-            this.console.log(category);
-
             category.dragging = false;
-            // event.target.style.opacity = '1';
         },
         onDragEndElement(event, element) {
             element.dragging = false;
