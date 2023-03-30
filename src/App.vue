@@ -119,14 +119,12 @@
                                             ? 'action-button-move-blue'
                                             : 'action-button-move'
                                     "
-                                    @mouseover="
-                                        category.highlightedArrow = true
+                                    @mousedown="
+                                        mouseDownCategoryArrow($event, category)
                                     "
-                                    @mouseout="
-                                        category.highlightedArrow = false
+                                    @mouseup="
+                                        mouseUpCategoryArrow($event, category)
                                     "
-                                    @mousedown="category.dragging = true"
-                                    @mouseup="category.dragging = false"
                                 ></button>
                             </div>
                         </div>
@@ -280,17 +278,17 @@
                                                         ? 'action-button-move-blue'
                                                         : 'action-button-move'
                                                 "
-                                                @mouseover="
-                                                    element.highlightedArrow = true
-                                                "
-                                                @mouseout="
-                                                    element.highlightedArrow = false
-                                                "
                                                 @mousedown="
-                                                    element.dragging = true
+                                                    mouseDownElementArrow(
+                                                        $event,
+                                                        element
+                                                    )
                                                 "
                                                 @mouseup="
-                                                    element.dragging = false
+                                                    mouseDownElementArrow(
+                                                        $event,
+                                                        element
+                                                    )
                                                 "
                                             ></button>
                                         </div>
@@ -401,10 +399,12 @@
                                             ? 'action-button-move-blue'
                                             : 'action-button-move'
                                     "
-                                    @mouseover="element.highlightedArrow = true"
-                                    @mouseout="element.highlightedArrow = false"
-                                    @mousedown="element.dragging = true"
-                                    @mouseup="element.dragging = false"
+                                    @mousedown="
+                                        mouseDownElementArrow($event, element)
+                                    "
+                                    @mouseup="
+                                        mouseDownElementArrow($event, element)
+                                    "
                                 ></button>
                             </div>
                         </div>
@@ -771,13 +771,39 @@ export default {
         },
         onDragEndCategory(event, category) {
             category.dragging = false;
+
+            for (let cat of this.categories) {
+                cat.highlightedArrow = false;
+            }
         },
         onDragEndElement(event, element) {
             element.dragging = false;
+
+            for (let cat of this.categories) {
+                for (let elem of cat.elements) {
+                    elem.highlightedArrow = false;
+                }
+            }
         },
         clickClose() {
             this.searchQuery = '';
             this.inputFocus = false;
+        },
+        mouseDownCategoryArrow(event, category) {
+            category.dragging = true;
+            category.highlightedArrow = true;
+        },
+        mouseUpCategoryArrow(event, category) {
+            category.dragging = false;
+            category.highlightedArrow = false;
+        },
+        mouseDownElementArrow(event, element) {
+            element.dragging = true;
+            element.highlightedArrow = true;
+        },
+        mouseUpElementArrow(event, element) {
+            element.dragging = false;
+            element.highlightedArrow = false;
         },
     },
 };
@@ -803,7 +829,7 @@ header {
 }
 .page-actions {
     display: flex;
-    gap: 5px;
+    /* gap: 5px; */
 }
 .page-title {
     font-family: 'Fira Sans';
@@ -829,7 +855,7 @@ header {
 .action-new-category {
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin: 0 10px;
     width: 115px;
     height: 30px;
     border: 1px solid #d3d8df;
@@ -954,7 +980,7 @@ li {
 
 .category {
     display: flex;
-    gap: 14px;
+    /* gap: 14px; */
     font-family: 'Fira Sans';
     font-weight: 500;
     font-size: 15px;
@@ -967,6 +993,7 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 14px;
     width: 22px;
     height: 22px;
     background-color: #fff;
@@ -1041,6 +1068,7 @@ li {
     font-family: 'Fira Sans';
     font-weight: 400;
     font-size: 13px;
+    background-color: #fff;
     color: #000000;
 }
 
@@ -1050,6 +1078,7 @@ li {
     align-items: center;
     width: 1190px;
     height: 34px;
+    background-color: #fff;
     border: solid 1px #dfe4ef;
     /* border: 4px solid #ff238d; */
 }
@@ -1070,6 +1099,7 @@ li {
 .elem-open {
     padding: 0;
     margin: 0;
+    max-height: 500px;
     list-style-type: none;
     transition: max-height 1s 0s ease-in;
 }
@@ -1119,7 +1149,8 @@ li:first-child .dot:first-of-type {
 .drag-clone {
     width: 1160px;
     height: 35px;
-    background: #ffffff;
+    background-color: #fff;
+    opacity: 1;
     border: solid 1px #dfe4ef;
     box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
 }
