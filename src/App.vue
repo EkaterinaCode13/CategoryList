@@ -1072,7 +1072,6 @@ li {
     height: 34px;
     background-color: #fff;
     border: solid 1px #dfe4ef;
-    /* border: 4px solid #ff238d; */
 }
 
 .elem-list li .element-container {
@@ -1092,7 +1091,7 @@ li {
 }
 
 .additional-list li:last-child .element-container {
-    border: solid 1px #dfe4ef;
+    border-bottom: solid 1px #dfe4ef;
 }
 
 .element-container > div {
