@@ -946,6 +946,10 @@ ul {
     padding: 0;
 }
 
+ul + ul {
+    margin: -1px;
+}
+
 li {
     list-style-type: none;
 }
