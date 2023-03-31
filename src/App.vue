@@ -1052,7 +1052,6 @@ li {
     margin-top: 14px;
     background-color: #fff;
 }
-
 .elem-list li,
 .additional-list li {
     width: 1190px;
@@ -1085,7 +1084,7 @@ li {
 }
 
 .category-list li:last-child .elem-list li:last-child .element-container {
-    border: solid 1px #dfe4ef;
+    border-bottom: solid 1px #dfe4ef;
 }
 
 .additional-list li .element-container {
