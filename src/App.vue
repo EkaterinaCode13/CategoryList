@@ -129,7 +129,7 @@
                             </div>
                         </div>
 
-                        <div v-if="category.dragging" class="dragImg">
+                        <div v-if="category.dragging" class="drag-img">
                             <div class="category-container drag-clone">
                                 <div class="category">
                                     <button
@@ -295,7 +295,7 @@
                                     </div>
                                     <div
                                         v-if="element.dragging"
-                                        class="dragImg"
+                                        class="drag-img"
                                     >
                                         <div
                                             class="element-container drag-clone"
@@ -408,7 +408,7 @@
                                 ></button>
                             </div>
                         </div>
-                        <div v-if="element.dragging" class="dragImg">
+                        <div v-if="element.dragging" class="drag-img">
                             <div class="element-container drag-clone">
                                 <div>
                                     {{ element.title }}
@@ -625,7 +625,7 @@ export default {
 
             event.dataTransfer.setData('fromElementIndex', elementIndex);
 
-            let dragClone = document.querySelector('.dragImg');
+            let dragClone = document.querySelector('.drag-img');
 
             let dragX = categoryIndex == -1 || elementIndex == -1 ? 1150 : 1180;
 
@@ -825,11 +825,9 @@ header {
     min-width: 1860px;
     height: 90px;
     padding: 38px 30px 23px 30px;
-    /* border: solid 1px red; */
 }
 .page-actions {
     display: flex;
-    /* gap: 5px; */
 }
 .page-title {
     font-family: 'Fira Sans';
@@ -837,7 +835,6 @@ header {
     font-weight: 500;
     font-size: 22px;
     color: #000000;
-    /* border: solid 1px red; */
 }
 .action-bookmark {
     display: flex;
@@ -887,11 +884,9 @@ header {
 }
 
 main {
-    /* width: 1190px; */
     width: 100%;
     min-height: 600px;
     padding: 0 30px;
-    /* border: solid 1px green; */
 }
 
 .search-bar {
@@ -949,7 +944,6 @@ main {
 ul {
     width: 100%;
     padding: 0;
-    /* border: 1px solid #dfe4ef; */
 }
 
 li {
@@ -980,13 +974,11 @@ li {
 
 .category {
     display: flex;
-    /* gap: 14px; */
     font-family: 'Fira Sans';
     font-weight: 500;
     font-size: 15px;
     color: #000000;
     padding-left: 17px;
-    /* border: 1px solid #ff238d; */
 }
 
 .category > .collapse {
@@ -1155,7 +1147,7 @@ li:first-child .dot:first-of-type {
     box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
 }
 
-.dragImg {
+.drag-img {
     position: absolute;
     padding: 7px;
     top: -3271px;
