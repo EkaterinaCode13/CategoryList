@@ -52,6 +52,9 @@
                             @dragstart="onDragStart($event, categoryIndex, -1)"
                             @dragend="onDragEndCategory($event, category)"
                             :class="[
+                                category.collapse
+                                    ? 'category-container-collapse'
+                                    : '',
                                 category.droppable ? 'drop' : '',
                                 category.dragging
                                     ? 'drag-color-none'
@@ -946,10 +949,6 @@ ul {
     padding: 0;
 }
 
-ul + ul {
-    margin: -1px;
-}
-
 li {
     list-style-type: none;
 }
@@ -974,6 +973,14 @@ li {
     height: 48px;
     background-color: #fff;
     border: solid 1px #dfe4ef;
+}
+
+.category-container-collapse {
+    border-bottom: none;
+}
+
+.category-container:last-child {
+    border-bottom: solid 1px #dfe4ef !important;
 }
 
 .category {
