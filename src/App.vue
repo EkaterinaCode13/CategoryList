@@ -1042,14 +1042,14 @@ li {
 .action-button-move-blue {
     background: url(../public/img/category/category-move-blue.png) no-repeat;
 }
-.additional-list {
-    width: 1190px;
-    margin-top: 14px;
-    background-color: #fff;
-}
 
 .elem-list {
     width: 1190px;
+    background-color: #fff;
+}
+.additional-list {
+    width: 1190px;
+    margin-top: 14px;
     background-color: #fff;
 }
 
@@ -1068,6 +1068,7 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     width: 1190px;
     height: 34px;
     background-color: #fff;
@@ -1077,6 +1078,22 @@ li {
 
 .elem-list li .element-container {
     border-top: none;
+}
+
+.elem-list li:last-child .element-container {
+    border-bottom: none;
+}
+
+.category-list li:last-child .elem-list li:last-child .element-container {
+    border: solid 1px #dfe4ef;
+}
+
+.additional-list li .element-container {
+    border-bottom: none;
+}
+
+.additional-list li:last-child .element-container {
+    border: solid 1px #dfe4ef;
 }
 
 .element-container > div {
@@ -1135,7 +1152,7 @@ li:first-child .dot:first-of-type {
 }
 
 .drop {
-    border-bottom: solid 4px #0066ff;
+    border-bottom: solid 4px #0066ff !important;
 }
 
 .drag-clone {
