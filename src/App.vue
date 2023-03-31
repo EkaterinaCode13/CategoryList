@@ -979,7 +979,7 @@ li {
     border-bottom: none;
 }
 
-.category-container:last-child {
+.category-list li:last-child .category-container {
     border-bottom: solid 1px #dfe4ef !important;
 }
 
