@@ -980,7 +980,7 @@ li {
 }
 
 .category-list li:last-child .category-container {
-    border-bottom: solid 1px #dfe4ef !important;
+    border-bottom: solid 1px #dfe4ef;
 }
 
 .category {
