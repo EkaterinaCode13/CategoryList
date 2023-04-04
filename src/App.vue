@@ -288,7 +288,7 @@
                                                     )
                                                 "
                                                 @mouseup="
-                                                    mouseDownElementArrow(
+                                                    mouseUpElementArrow(
                                                         $event,
                                                         element
                                                     )
@@ -406,7 +406,7 @@
                                         mouseDownElementArrow($event, element)
                                     "
                                     @mouseup="
-                                        mouseDownElementArrow($event, element)
+                                        mouseUpElementArrow($event, element)
                                     "
                                 ></button>
                             </div>
@@ -455,6 +455,7 @@ export default {
         return {
             searchQuery: '',
             inputFocus: false,
+            console: console,
             categories: [
                 {
                     title: 'Обязательные для всех',
@@ -638,10 +639,10 @@ export default {
         },
         onDrop(event, categoryIndex, elementIndex) {
             const fromCategoryIndex =
-                event.dataTransfer.getData('fromCategoryIndex');
+                +event.dataTransfer.getData('fromCategoryIndex');
 
             const fromElementIndex =
-                event.dataTransfer.getData('fromElementIndex');
+                +event.dataTransfer.getData('fromElementIndex');
 
             const toCategoryIndex = categoryIndex;
 
@@ -651,8 +652,17 @@ export default {
             if (fromElementIndex == -1 && toCategoryIndex == -1) {
                 this.filteredCategories[fromCategoryIndex].dragging = false;
                 this.filteredElements[toElementIndex].droppable = false;
+
                 return false;
                 // тащим категорию...
+            } else if (
+                fromCategoryIndex !== -1 &&
+                fromCategoryIndex == toCategoryIndex &&
+                fromElementIndex == -1
+            ) {
+                this.filteredCategories[toCategoryIndex].droppable = false;
+
+                return false;
             } else if (
                 fromElementIndex == -1 &&
                 toCategoryIndex !== -1 &&
@@ -715,6 +725,7 @@ export default {
 
             if (fromCategoryIndex == -1) {
                 element = this.elements[fromElementIndex];
+
                 element.dragging = false;
 
                 this.elements = this.elements.filter((elem) => elem != element);
@@ -730,6 +741,7 @@ export default {
             }
 
             if (toCategoryIndex == -1) {
+                element.highlightedArrow = false;
                 if (toElementIndex == -1) {
                     let newElements = this.elements.unshift(element);
                 } else {
