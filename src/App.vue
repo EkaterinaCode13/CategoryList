@@ -661,6 +661,9 @@ export default {
                 fromElementIndex == -1
             ) {
                 this.filteredCategories[toCategoryIndex].droppable = false;
+                this.filteredCategories[toCategoryIndex].elements[
+                    toElementIndex
+                ].droppable = false;
 
                 return false;
             } else if (
